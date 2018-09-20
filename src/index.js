@@ -1,5 +1,6 @@
+const windowExists = typeof window !== 'undefined';
 
-function init (options = {}) {
+function initialise (options = {}) {
   const worker = new Worker('./web-worker.js');
 
   worker.addEventListener('message', ({data}) => {
@@ -13,23 +14,33 @@ function init (options = {}) {
     }
   });
 
-  window.addEventListener('load', () => {
-    worker.postMessage('start');
-  });
+  if (windowExists) {
+    window.addEventListener('load', () => {
+      worker.postMessage('start');
+    });
+  }
 
-  const event = document.createEvent('Event');
-
-  event.initEvent('NEW_VERSION', true, true);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js').then(registration => {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }).catch(err => {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  }
 
   function notify () {
     if (options.hasOwnProperty('dispatch')) {
       options.dispatch({
         type: 'NEW_VERSION'
       });
-    } else if (typeof window !== 'undefined') {
+    } else if (windowExists) {
+      const event = document.createEvent('Event');
+      event.initialiseEvent('NEW_VERSION', true, true);
       window.dispatchEvent(event);
     }
   }
 }
 
-module.exports = {init};
+module.exports = {initialise};

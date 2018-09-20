@@ -1,3 +1,3 @@
-const init = require('./src');
+const obj = require('./src');
 
-module.exports = init;
+module.exports = obj;

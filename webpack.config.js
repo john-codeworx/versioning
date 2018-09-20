@@ -5,6 +5,7 @@ const cwd = process.cwd();
 module.exports = {
   entry: {
     'example': path.join(cwd, 'src', 'example.js'),
+    'service-worker': path.join(cwd, 'src', 'service-worker.js'),
     'web-worker': path.join(cwd, 'src', 'web-worker.js')
   },
   output: {
