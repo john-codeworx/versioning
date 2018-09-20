@@ -1,5 +1,5 @@
 
-function init (options) {
+function init (options = {}) {
   const worker = new Worker('./web-worker.js');
 
   worker.addEventListener('message', ({data}) => {
