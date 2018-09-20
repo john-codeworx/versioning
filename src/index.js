@@ -37,7 +37,7 @@ function initialise (options = {}) {
       });
     } else if (windowExists) {
       const event = document.createEvent('Event');
-      event.initialiseEvent('NEW_VERSION', true, true);
+      event.initEvent('NEW_VERSION', true, true);
       window.dispatchEvent(event);
     }
   }
