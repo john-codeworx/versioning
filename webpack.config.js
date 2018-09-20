@@ -4,13 +4,11 @@ const cwd = process.cwd();
 
 module.exports = {
   entry: {
-    'index': path.join(cwd, 'src', 'index.js'),
-    // 'service-worker': path.join(cwd, 'src', 'service-worker.js'),
     'example': path.join(cwd, 'src', 'example.js'),
     'web-worker': path.join(cwd, 'src', 'web-worker.js')
   },
   output: {
-    path: path.join(cwd, 'build'),
+    path: path.join(cwd, 'public'),
     filename: '[name].js'
   },
   module: {
@@ -28,7 +26,7 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: path.join(cwd, 'build'),
+    contentBase: path.join(cwd, 'public'),
     compress: true,
     port: 8084
   }
