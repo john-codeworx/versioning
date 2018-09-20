@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     'index': path.join(cwd, 'src', 'index.js'),
     // 'service-worker': path.join(cwd, 'src', 'service-worker.js'),
+    'example': path.join(cwd, 'src', 'example.js'),
     'web-worker': path.join(cwd, 'src', 'web-worker.js')
   },
   output: {
@@ -27,8 +28,8 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: path.join(cwd, 'public'),
+    contentBase: path.join(cwd, 'build'),
     compress: true,
-    port: 8083
+    port: 8084
   }
 };
