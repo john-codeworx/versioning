@@ -1,6 +1,6 @@
-const windowExists = typeof window !== 'undefined';
+function initialise (config = {}) {
+  if (typeof window === 'undefined') return;
 
-function initialise (options = {}) {
   const worker = new Worker('./web-worker.js');
 
   worker.addEventListener('message', ({data}) => {
@@ -14,11 +14,9 @@ function initialise (options = {}) {
     }
   });
 
-  if (windowExists) {
-    window.addEventListener('load', () => {
-      worker.postMessage('start');
-    });
-  }
+  window.addEventListener('load', () => {
+    worker.postMessage('start');
+  });
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').then(registration => {
@@ -31,11 +29,11 @@ function initialise (options = {}) {
   }
 
   function notify () {
-    if (options.hasOwnProperty('dispatch')) {
-      options.dispatch({
+    if (config.hasOwnProperty('dispatch')) {
+      config.dispatch({
         type: 'NEW_VERSION'
       });
-    } else if (windowExists) {
+    } else {
       const event = document.createEvent('Event');
       event.initEvent('NEW_VERSION', true, true);
       window.dispatchEvent(event);
