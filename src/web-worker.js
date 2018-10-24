@@ -2,13 +2,13 @@ import '@babel/polyfill';
 import 'universal-fetch';
 import {set, get, del} from 'idb-keyval';
 
-self.addEventListener('message', async ({data}) => {
+self.addEventListener('message', ({data}) => {
   console.log(`Message from main thread: ${data}`);
 
   switch(data) {
     case 'start':
-      await install(true);
-      await poller();
+      install();
+      poller();
 
       setInterval(poller, 1000 * 10);
 
@@ -16,19 +16,15 @@ self.addEventListener('message', async ({data}) => {
   }
 });
 
-async function install (force = false) {
-  const v = await get('version');
+async function install () {
+  const response = await fetch('./version.json', {cache: 'no-cache'});
+  const {version} = await response.json();
 
-  if (!v || force) {
-    const response = await fetch('./version.json');
-    const {version} = await response.json();
-
-    await set('version', version);
-  }
+  set('version', version);
 }
 
 async function poller () {
-  const response = await fetch('./version.json');
+  const response = await fetch('./version.json', {cache: 'no-cache'});
   const {version: newVersion} = await response.json();
   const version = await get('version');
 
